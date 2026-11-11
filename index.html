@@ -17,10 +17,7 @@
       --text-dark: #4A2033;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0;  }
-
-    body, button, input { font-family: 'Cairo', Tahoma, sans-serif; }
-    h1, .author-badge, .shiny-cheer-badge { font-family: 'Amiri', Georgia, serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif !important; }
 
     body {
       background-color: var(--bg-cream);
@@ -38,34 +35,62 @@
       overflow-x: hidden;
     }
 
-    .page-layout {
-      width: 100%;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 680px) minmax(0, 1fr);
-      align-items: center;
-      gap: 16px;
-    }
-    .side-credit {
-      font: 700 55px/1.35 'Amiri', Georgia, serif;
+    /* النص الجانبي الأيمن - مع التشكيل وتقليل التباعد */
+    .right-supervisor-text {
+      position: fixed;
+      top: 50%;
+      right: clamp(20px, 6vw, 100px);
+      transform: translateY(-50%);
+      z-index: 1;
+      pointer-events: none;
+      font-family: 'Amiri', serif !important;
+      font-size: 55px;
+      font-weight: 700;
       color: var(--deep-berry);
+      line-height: 1.35;
       text-align: center;
-      text-wrap: balance;
+      white-space: nowrap;
     }
-    .side-credit span { color: #9E3B6C; white-space: nowrap; }
-    @media (max-width: 1399px) {
-      .side-credit { font-size: clamp(26px, 3.15vw, 44px); }
+
+    .right-supervisor-text span {
+      display: block;
+      font-family: 'Amiri', serif !important;
+      color: #9E3B6C;
+      margin-top: 2px;
     }
-    @media (max-width: 1050px) {
-      .page-layout { max-width: 680px; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-      .side-credit { font-size: clamp(18px, 3.8vw, 30px); }
-      .app-card { grid-row: 2; grid-column: 1 / -1; }
+
+    /* النص الجانبي الأيسر - مع التشكيل وبدون كسرة النون وتقليل التباعد */
+    .left-school-text {
+      position: fixed;
+      top: 50%;
+      left: clamp(20px, 6vw, 100px);
+      transform: translateY(-50%);
+      z-index: 1;
+      pointer-events: none;
+      font-family: 'Amiri', serif !important;
+      font-size: 55px;
+      font-weight: 700;
+      color: var(--deep-berry);
+      line-height: 1.35;
+      text-align: center;
+      white-space: nowrap;
     }
-    @media (max-width: 480px) {
-      .page-layout { grid-template-columns: 1fr; }
-      .app-card { grid-row: 3; }
-      .page-layout .app-card, .modal-overlay .modal-card { padding: 15px; }
-      .top-header { flex-wrap: wrap; gap: 8px; }
-      .options-grid .clay-btn { padding: 10px 5px; font-size: .96rem; }
+
+    .left-school-text span {
+      display: block;
+      font-family: 'Amiri', serif !important;
+      color: #9E3B6C;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 1400px) {
+      .right-supervisor-text, .left-school-text {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .right-supervisor-text, .left-school-text { display: none; }
     }
 
     .app-card {
@@ -248,13 +273,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      visibility: hidden; opacity: 0; pointer-events: none;
+      opacity: 0; pointer-events: none;
       transition: opacity 0.3s;
       z-index: 200;
       padding: 16px;
     }
 
-    .modal-overlay.active { visibility: visible; opacity: 1; pointer-events: auto; }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
     .modal-card {
       background: var(--bg-cream);
@@ -325,25 +350,27 @@
       border-bottom: 1px solid var(--gold-light);
     }
 
-    .results-table { table-layout: fixed; overflow-wrap: anywhere; }
-    .results-table th, .results-table td { padding-inline: 5px; }
-    .math { direction: ltr; unicode-bidi: isolate; }
-    button:focus-visible, input:focus-visible { outline: 3px solid #9E3B6C; outline-offset: 3px; }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { transition: none !important; }
-    }
-
     .results-table th { color: var(--deep-berry); font-weight: 800; }
   </style>
 </head>
 <body>
 
-  <main class="page-layout">
-    <div class="side-credit">إِشْرَافُ المـُعَلِّمَةِ: <span>أحْلاَم السَّيْف</span></div>
-    <div class="app-card" id="gameCard">
+  <!-- النص على الجهة اليمنى - مشكّل ومتقارب -->
+  <div class="right-supervisor-text">
+    إِشْرَافُ المـُعَلِّمَةِ:
+    <span>أَحْلاَم السَّيْف</span>
+  </div>
+
+  <!-- النص على الجهة اليسرى - مشكّل وبدون كسرة النون في الظهران -->
+  <div class="left-school-text">
+    ثَانَوِيَّةُ الخَنْسَاءِ
+    <span>بِالظَّهْرَان</span>
+  </div>
+
+  <div class="app-card">
     <div class="top-header">
       <span class="badge-3d">صالون الورد · كثيرات الحدود 🌸</span>
-      <button class="sound-btn" aria-pressed="true" onclick="toggleSound()" id="sndBtn">🔊 الصوت: مفعل</button>
+      <button class="sound-btn" onclick="toggleSound()" id="sndBtn">🔊 الصوت: مفعل</button>
     </div>
 
     <div class="title-area">
@@ -358,7 +385,7 @@
       
       <div class="name-input-box">
         <label for="playerNameInput">سجّلي اسمكِ لدخول المسابقة 🌸:</label>
-        <input type="text" id="playerNameInput" placeholder="أدخلي اسمكِ هنا..." value="سارة" maxlength="60" autocomplete="off">
+        <input type="text" id="playerNameInput" placeholder="أدخلي اسمكِ هنا..." value="سارة">
       </div>
 
       <button class="action-btn" onclick="startGame()">ابدئي اللعبة الآن 🚀</button>
@@ -367,23 +394,21 @@
     <div id="gameScreen" class="screen-view">
       <div class="info-bar">
         <span id="qProgress">السؤال: 1 من 5</span>
-        <span id="scoreText">⭐ النقاط: 0</span>
+        <span id="scoreText">⭐ Points: 0</span>
       </div>
 
       <div class="canvas-container">
-        <canvas id="curveCanvas" role="img" aria-label="الرسم البياني للدالة مع خط الصفر"></canvas>
+        <canvas id="curveCanvas"></canvas>
       </div>
 
-      <h3 id="stageTitle" tabindex="-1" style="text-align: center; color: var(--deep-berry); margin-bottom: 4px;">المرحلة الأولى — خطية</h3>
+      <h3 id="stageTitle" style="text-align: center; color: var(--deep-berry); margin-bottom: 4px;">المرحلة الأولى — خطية</h3>
       <p id="stageEq" style="text-align: center; color: #55404C; font-weight: 800; margin-bottom: 16px; font-size: 1.15rem;">f(x) = x − 2</p>
 
       <div class="options-grid" id="valsGrid"></div>
     </div>
-    </div>
-    <div class="side-credit">ثَانَوِيَّةُ الخَنْسَاءِ: <span>بِالظَّهْرَان</span></div>
-  </main>
+  </div>
 
-  <div class="modal-overlay" id="popModal" role="dialog" aria-modal="true" aria-labelledby="popTitle" aria-hidden="true">
+  <div class="modal-overlay" id="popModal">
     <div class="modal-card">
       <div style="font-size: 4rem; margin-bottom: 6px;" id="popEmoji">🥳</div>
       <h2 id="popTitle" style="color: var(--deep-berry); font-weight: 900; margin-bottom: 6px;">خطططيييرة!</h2>
@@ -401,9 +426,9 @@
   let score = 0;
   let userAnswers = [];
   let currentQuestions = [];
-  let audioCtx;
-  let applauseBuffer;
-  let roundLocked = false;
+  let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  let applauseAudio = new Audio("data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//7UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAAJAAAFngAoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoPz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/Pz8/F0AAAAABlAAGAAA//5gAQgAAAAMH+V0/gIAAC31kKxQAQAARgAYAAA//5gASAAAAAwfxXT+AgAAK/2UrFABABF4AGAAA//5gAUAAAAAFAAAAAAEAAAAAAAAAAAAAAAAAAA==");
 
   const questionPool = [
     { title: "السؤال 1: دالة خطية", eqText: "ما هي أصفار الدالة: f(x) = x − 2 ؟", opts: ["x = 2", "x = -2", "x = 4", "x = 0"], ans: 0, explain: "f(2) = 2 - 2 = 0", fn: x => x - 2 },
@@ -435,7 +460,8 @@
   ];
 
   function fireConfettiFromCenter() {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    applauseAudio.currentTime = 0;
+    applauseAudio.play().catch(e => {});
 
     const modalCard = document.querySelector('.modal-card');
     let originX = 0.5;
@@ -445,11 +471,6 @@
       const rect = modalCard.getBoundingClientRect();
       originX = (rect.left + rect.width / 2) / window.innerWidth;
       originY = (rect.top + rect.height / 2) / window.innerHeight;
-    }
-
-    if (typeof window.confetti !== 'function') {
-      drawLocalConfetti(originX, originY);
-      return;
     }
 
     var count = 350;
@@ -471,113 +492,34 @@
     fire(0.1, { spread: 360, startVelocity: 80, colors: ['#ff2a85', '#00f5d4', '#ffffff'] });
   }
 
-  function drawLocalConfetti(originX, originY) {
-    const overlay = document.createElement('canvas');
-    overlay.setAttribute('aria-hidden', 'true');
-    overlay.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:999999';
-    overlay.width = window.innerWidth;
-    overlay.height = window.innerHeight;
-    document.body.appendChild(overlay);
-    const ctx = overlay.getContext('2d');
-    const colors = ['#ff2a85', '#ffb703', '#9d4edd', '#00c8af', '#e89cae', '#6a2c49'];
-    const reach = Math.hypot(overlay.width, overlay.height) * .7;
-    const pieces = Array.from({length: 350}, (_, i) => {
-      const angle = i / 350 * Math.PI * 2;
-      const speed = reach * (.28 + .9 * Math.random());
-      return {vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-        spin: (Math.random() - .5) * 14, size: 4 + Math.random() * 8, color: colors[i % colors.length]};
-    });
-    const start = performance.now();
-
-    function animate(now) {
-      const time = Math.min((now - start) / 1000, 2);
-      const travel = (1 - Math.exp(-1.5 * time)) / 1.5;
-      ctx.clearRect(0, 0, overlay.width, overlay.height);
-      ctx.globalAlpha = Math.min(1, (2 - time) * 1.7);
-      for (const piece of pieces) {
-        ctx.save();
-        ctx.translate(originX * overlay.width + piece.vx * travel,
-          originY * overlay.height + piece.vy * travel + 115 * time * time);
-        ctx.rotate(piece.spin * time);
-        ctx.fillStyle = piece.color;
-        ctx.fillRect(-piece.size / 2, -piece.size / 4, piece.size, piece.size / 2);
-        ctx.restore();
-      }
-      if (time < 2) requestAnimationFrame(animate);
-      else overlay.remove();
-    }
-
-    requestAnimationFrame(animate);
-  }
-
   function playCuteSound(type) {
-    const AudioEngine = window.AudioContext || window.webkitAudioContext;
-    if (!soundOn || !AudioEngine) return;
-
+    if (!soundOn) return;
     try {
-      audioCtx ||= new AudioEngine();
-      if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
-      const now = audioCtx.currentTime;
-
-      if (type === 'applause') {
-        if (!applauseBuffer) {
-          const rate = audioCtx.sampleRate;
-          applauseBuffer = audioCtx.createBuffer(1, Math.floor(rate * 1.45), rate);
-          const samples = applauseBuffer.getChannelData(0);
-          for (let clap = 0; clap < 35; clap++) {
-            const offset = Math.floor(Math.random() * rate * 1.25);
-            const length = Math.floor(rate * (0.025 + Math.random() * 0.07));
-            for (let i = 0; i < length; i++) {
-              samples[offset + i] += (Math.random() * 2 - 1) * Math.exp(-i / (length * .15)) * .27;
-            }
-          }
-        }
-        const source = audioCtx.createBufferSource();
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.value = 1900;
-        source.buffer = applauseBuffer;
-        source.connect(filter).connect(audioCtx.destination);
-        source.start(now);
-        return;
+      if (type === 'click') {
+        let osc = audioCtx.createOscillator();
+        let g = audioCtx.createGain();
+        osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+        osc.connect(g); g.connect(audioCtx.destination);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+      } else if (type === 'win' || type === 'cheer') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+          setTimeout(() => {
+            let osc = audioCtx.createOscillator();
+            let g = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+          }, i * 80);
+        });
       }
-
-      const notes = type === 'click' ? [450] : [523.25, 659.25, 783.99, 1046.50];
-      notes.forEach((frequency, index) => {
-        const start = now + index * .08;
-        const tone = audioCtx.createOscillator();
-        const volume = audioCtx.createGain();
-        tone.type = 'triangle';
-        tone.frequency.value = frequency;
-        volume.gain.setValueAtTime(.11, start);
-        volume.gain.exponentialRampToValueAtTime(.001, start + .16);
-        tone.connect(volume).connect(audioCtx.destination);
-        tone.start(start);
-        tone.stop(start + .16);
-      });
-    } catch (error) {
-      console.warn('تعذّر تشغيل الصوت.', error);
-    }
-  }
-
-  function setModal(open) {
-    const modal = document.getElementById('popModal');
-    modal.classList.toggle('active', open);
-    modal.setAttribute('aria-hidden', String(!open));
-    document.getElementById('gameCard').inert = open;
-    if (open) document.getElementById('popBtn').focus();
-  }
-
-  function setCheer(message) {
-    const badge = document.createElement('div');
-    badge.className = 'shiny-cheer-badge';
-    badge.textContent = message;
-    document.getElementById('cheerBadgeArea').replaceChildren(badge);
+    } catch(e){}
   }
 
   function toggleSound() {
     soundOn = !soundOn;
-    document.getElementById('sndBtn').setAttribute('aria-pressed', String(soundOn));
     document.getElementById('sndBtn').innerText = soundOn ? "🔊 الصوت: مفعل" : "🔇 الصوت: مكتوم";
   }
 
@@ -589,112 +531,65 @@
     document.getElementById('startScreen').classList.remove('active');
     document.getElementById('gameScreen').classList.add('active');
     
-    const shuffled = [...questionPool];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    currentQuestions = shuffled.slice(0, 5);
+    currentQuestions = [...questionPool].sort(() => 0.5 - Math.random()).slice(0, 5);
     currentStageIdx = 0; score = 0; userAnswers = [];
     loadStage();
   }
 
   function restartGame() {
-    setModal(false);
+    document.getElementById('popModal').classList.remove('active');
     document.getElementById('gameScreen').classList.remove('active');
     document.getElementById('startScreen').classList.add('active');
-    document.getElementById('playerNameInput').focus();
   }
 
   function drawCurve() {
-    const question = currentQuestions[currentStageIdx];
-    if (!question || !document.getElementById('gameScreen').classList.contains('active')) return;
-    const canvas = document.getElementById('curveCanvas');
-    const { width, height } = canvas.getBoundingClientRect();
-    if (!width || !height) return;
-    const ctx = canvas.getContext('2d');
-    const ratio = Math.min(window.devicePixelRatio || 1, 3);
-    canvas.width = Math.round(width * ratio);
-    canvas.height = Math.round(height * ratio);
-    ctx.scale(ratio, ratio);
+    const cvs = document.getElementById('curveCanvas');
+    const ctx = cvs.getContext('2d');
+    cvs.width = cvs.clientWidth; cvs.height = cvs.clientHeight;
 
-    const left = 21;
-    const right = width - 19;
-    const zeroY = height / 2;
-    const scaleX = (right - left) / 12;
-    const midX = (left + right) / 2;
-    const scaleY = (height - 16) / 24;
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    const zeroY = cvs.height / 2;
 
-    ctx.strokeStyle = '#ead6df';
-    for (let value = -5; value <= 5; value++) {
-      const x = midX + value * scaleX;
-      ctx.beginPath();
-      ctx.moveTo(x, 8);
-      ctx.lineTo(x, height - 8);
-      ctx.stroke();
-    }
-    ctx.strokeStyle = '#6A2C49';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(left, zeroY);
-    ctx.lineTo(right, zeroY);
-    ctx.moveTo(midX, 8);
-    ctx.lineTo(midX, height - 8);
-    ctx.stroke();
+    ctx.strokeStyle = '#6A2C49'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(0, zeroY); ctx.lineTo(cvs.width, zeroY); ctx.stroke();
 
-    ctx.save();
+    const stg = currentQuestions[currentStageIdx];
+    ctx.strokeStyle = '#E89CAE'; ctx.lineWidth = 3.5;
     ctx.beginPath();
-    ctx.rect(left, 8, right - left, height - 16);
-    ctx.clip();
-    ctx.strokeStyle = '#a23f70';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    for (let px = left; px <= right; px++) {
-      const x = (px - midX) / scaleX;
-      const y = zeroY - question.fn(x) * scaleY;
-      if (px === left) ctx.moveTo(px, y);
-      else ctx.lineTo(px, y);
+    for(let px = 0; px <= cvs.width; px++) {
+      let x = (px - cvs.width/2) / 45;
+      let y = stg.fn(x);
+      let py = zeroY - y * 18;
+      if (px === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
     }
     ctx.stroke();
-    ctx.restore();
-
-    ctx.fillStyle = '#4A2033';
-    ctx.font = '12px Arial';
-    ctx.textAlign = 'center';
-    for (let value = -5; value <= 5; value++) ctx.fillText(value, midX + value * scaleX, height - 1);
-    ctx.fillText('x', right + 8, zeroY + 4);
-    ctx.fillText('y', midX + 9, 12);
   }
 
   function loadStage() {
-    roundLocked = false;
     const stg = currentQuestions[currentStageIdx];
     document.getElementById('qProgress').innerText = `السؤال: ${currentStageIdx + 1} من 5`;
-    document.getElementById('scoreText').innerText = `⭐ النقاط: ${score}`;
-    document.getElementById('stageTitle').innerText = stg.title.replace(/^(?:السؤال \d+|سؤال جديد): /, '');
+    document.getElementById('scoreText').innerText = `⭐ Points: ${score}`;
+    document.getElementById('stageTitle').innerText = stg.title;
     document.getElementById('stageEq').innerText = stg.eqText;
     
     const grid = document.getElementById('valsGrid');
     grid.innerHTML = '';
     stg.opts.forEach((opt, idx) => {
       const btn = document.createElement('button');
-      btn.className = 'clay-btn math';
-      btn.type = 'button';
+      btn.className = 'clay-btn';
       btn.innerText = opt;
       btn.onclick = () => checkAnswer(idx);
       grid.appendChild(btn);
     });
     drawCurve();
-    document.getElementById('stageTitle').focus();
   }
 
   function checkAnswer(selectedIdx) {
-    if (roundLocked) return;
-    roundLocked = true;
     const stg = currentQuestions[currentStageIdx];
     const isOk = (selectedIdx === stg.ans);
     userAnswers.push({ question: stg.eqText, userAns: stg.opts[selectedIdx], correctAns: stg.opts[stg.ans], isCorrect: isOk, explain: stg.explain });
 
+    const pop = document.getElementById('popModal');
     document.getElementById('extraContent').innerHTML = '';
     const randEmoji = happyEmojis[Math.floor(Math.random() * happyEmojis.length)];
 
@@ -704,28 +599,27 @@
       const phrase = successPhrases[Math.floor(Math.random() * successPhrases.length)];
       document.getElementById('popEmoji').innerText = randEmoji;
       document.getElementById('popTitle').innerText = "إجابة صحيحة ومذهلة! 👏✨";
-      setCheer(`✨ ${phrase} ${playerName}! ✨`);
+      document.getElementById('cheerBadgeArea').innerHTML = `<div class="shiny-cheer-badge">✨ ${phrase} ${playerName}! ✨</div>`;
       document.getElementById('popSub').innerText = `أحسنتِ الإجابة دقيقة ونموذجية (+100 نقطة).`;
-      setModal(true);
-      playCuteSound('applause');
-      fireConfettiFromCenter();
+      pop.classList.add('active');
+      
+      setTimeout(fireConfettiFromCenter, 100);
     } else {
       playCuteSound('click');
       const phrase = retryPhrases[Math.floor(Math.random() * retryPhrases.length)];
       document.getElementById('popEmoji').innerText = "🥺💖";
       document.getElementById('popTitle').innerText = "محاولة قريبة!";
-      setCheer(`🌸 ${phrase} ${playerName}! 🌸`);
+      document.getElementById('cheerBadgeArea').innerHTML = `<div class="shiny-cheer-badge">🌸 ${phrase} ${playerName}! 🌸</div>`;
       document.getElementById('popSub').innerText = `تذكري دائماً أن أصفار الدالة هي القيم التي تجعل f(x) = 0.`;
-      setModal(true);
+      pop.classList.add('active');
     }
-    document.getElementById('scoreText').innerText = `⭐ النقاط: ${score}`;
-    document.getElementById('popBtn').innerText =
-      currentStageIdx === 4 ? 'شاهدي النتيجة' : 'السؤال التالي ➔';
+    document.getElementById('scoreText').innerText = `⭐ Points: ${score}`;
+    document.getElementById('popBtn').innerText = "السؤال التالي ➔";
     document.getElementById('popBtn').onclick = nextStage;
   }
 
   function nextStage() {
-    setModal(false);
+    document.getElementById('popModal').classList.remove('active');
     currentStageIdx++;
     if (currentStageIdx < 5) loadStage();
     else showFinalResults();
@@ -737,13 +631,13 @@
     document.getElementById('popEmoji').style.display = 'block';
     document.getElementById('popEmoji').innerText = "👑🎉";
     document.getElementById('popTitle').innerText = `تتويج الطالبة المتميزة! 👏🌸`;
-    setCheer(`👑 البطلة المبدعة: ${playerName} 👑`);
+    document.getElementById('cheerBadgeArea').innerHTML = `<div class="shiny-cheer-badge">👑 البطلة المبدعة: ${playerName} 👑</div>`;
     document.getElementById('popSub').innerText = `أنهيتِ مهمة بوابات الصفر بنجاح واقتدار!`;
 
     let contentHtml = `
       <div class="crown-card"><span style="font-size: 4rem;">👑</span></div>
       <div class="score-box">
-        <p style="font-size: 0.85rem; color: #765B6A; font-weight: 800; margin-bottom: 2px;">النتيجة النهائية للمتسابقة <bdi id="resultPlayer"></bdi></p>
+        <p style="font-size: 0.85rem; color: #765B6A; font-weight: 800; margin-bottom: 2px;">النتيجة النهائية للمتسابقة ${playerName}</p>
         <div class="score-value">${score} / 500</div>
       </div>
       <h3 style="color: var(--deep-berry); margin-top: 14px; font-size: 1rem; text-align: right;">مراجعة الإجابات والتحليل:</h3>
@@ -766,24 +660,14 @@
     contentHtml += `</tbody></table>`;
     
     document.getElementById('extraContent').innerHTML = contentHtml;
-    document.getElementById('resultPlayer').textContent = playerName;
     document.getElementById('popBtn').innerText = "العبي مرة ثانية (أسئلة جديدة 🎲)";
     document.getElementById('popBtn').onclick = () => restartGame();
-    setModal(true);
-    playCuteSound('applause');
-    fireConfettiFromCenter();
+    document.getElementById('popModal').classList.add('active');
+
+    setTimeout(fireConfettiFromCenter, 100);
   }
 
-  window.addEventListener('resize', drawCurve);
-  document.getElementById('playerNameInput').addEventListener('keydown', event => {
-    if (event.key === 'Enter') startGame();
-  });
-  document.getElementById('popModal').addEventListener('keydown', event => {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      document.getElementById('popBtn').focus();
-    }
-  });
+  window.onresize = drawCurve;
 </script>
 </body>
 </html>
